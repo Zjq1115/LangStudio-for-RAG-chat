@@ -14,13 +14,13 @@
 
 准备领域数据集（如金融新闻报道等数据集），保存至对象存储OSS平台的Bucket中。
 
-![image-20251116165549766](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116165549766.png)
+![image-20251116165549766](/pics/image-20251116165549766.png)
 
 ### 2、模型部署
 
 在阿里云的Model Gallery中选择DeepSeek-R1-Distill-Qwen-7B和bge-m3，分别作为对话基准模型与向量嵌入基准模型，并将其部署至EAS在线服务平台。
 
-![image-20251116170041991](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116170041991.png)
+![image-20251116170041991](/pics/image-20251116170041991.png)
 
 ### 3、创建任务流链接
 
@@ -32,33 +32,33 @@
 
 同3.1操作，创建创建通用Embedding模型服务连接。
 
-![image-20251116171217955](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116171217955.png)
+![image-20251116171217955](/pics/image-20251116171217955.png)
 
 #### 3.3 创建SerpApi连接
 
 在**服务连接配置** > **自定义连接**页签下单击**新建连接**，创建SerpApi连接。配置前提条件中获取的api_key。
 
-![image-20251116171236956](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116171236956.png)
+![image-20251116171236956](/pics/image-20251116171236956.png)
 
 ### 4、创建知识库索引
 
 新建知识库索引，将语料经过解析、分块、向量化后存储到向量数据库，从而构建知识库。配置数据源OSS路径、输出OSS路径、Embedding类型、Embedding连接以及向量数据库类型。
 
-![image-20251116171250322](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116171250322.png)
+![image-20251116171250322](/pics/image-20251116171250322.png)
 
 ### 5、创建并运行应用流
 
 进入LangStudio，选择工作空间后，在**应用流**页签下单击**新建应用流**，创建基于Web搜索和RAG的聊天助手应用流，并配置知识库索引、serp搜索以及大模型参数。
 
-![image-20251116170828092](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116170828092.png)
+![image-20251116170828092](/pics/image-20251116170828092.png)
 
 调试/运行：单击右上角**运行**，开始执行应用流。
 
-![image-20251116170932716](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116170932716.png)
+![image-20251116170932716](/pics/image-20251116170932716.png)
 
 也可以查看链路：单击生成答案下的**查看链路**，查看Trace详情或拓扑视图。
 
-![image-20251116171058807](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116171058807.png)
+![image-20251116171058807](/pics/image-20251116171058807.png)
 
 ### 6、部署应用流
 
@@ -70,3 +70,4 @@
 ## 三、参考文档
 
 https://help.aliyun.com/zh/pai/use-cases/chatbot-with-rag-and-web-search
+
