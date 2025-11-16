@@ -1,0 +1,72 @@
+# 基于LangStudio&DeepSeek的RAG及联网搜索聊天机器人解决方案
+
+本文介绍使用**LangStudio**构建基于Web搜索和RAG的聊天助手应用流。该应用流通过集成实时联网搜索和RAG能力，为模型提供了额外的联网搜索和特定领域知识库的能力，从而在处理用户输入的问题时，能够结合实时搜索结果和知识库提供更准确的回答。
+
+## 一、背景信息
+
+在现代信息技术迅速发展的背景下，"基于Web搜索和RAG的聊天助手" 应用流通过结合实时联网搜索和生成式人工智能的优势，为用户提供更全面和精准的回答。通过集成实时网络搜索和RAG能力，使模型不仅能够从特定领域的知识库中获取专业信息，还可以利用最新的网络数据进行实时更新和补充。这种双重信息源的结合，使得应用在金融、医疗等需要高度精确信息的领域中表现尤为出色。开发者可以基于该应用流的模板进行灵活的扩展和定制化开发，以更好地满足不同应用场景的需求，从而提升用户体验和决策支持能力。
+
+## 二、部署流程
+
+* 前提条件：涉及到平台包括阿里云的对象存储OSS、人工智能平台PAI（包括交互式建模DSW、分布式训练DLC、大模型应用开发LangStudio、模型在线服务EAS）、以及SerpApi联网搜索平台。
+
+### 1、领域数据集存储
+
+准备领域数据集（如金融新闻报道等数据集），保存至对象存储OSS平台的Bucket中。
+
+![image-20251116165549766](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116165549766.png)
+
+### 2、模型部署
+
+在阿里云的Model Gallery中选择DeepSeek-R1-Distill-Qwen-7B和bge-m3，分别作为对话基准模型与向量嵌入基准模型，并将其部署至EAS在线服务平台。
+
+![image-20251116170041991](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116170041991.png)
+
+### 3、创建任务流链接
+
+#### 3.1 创建LLM服务链接
+
+进入LangStudio，选择工作空间后，在**服务连接配置** > **模型服务**页签下单击**新建连接**，创建通用LLM模型服务连接，选择EAS在线服务对应的DeepSeek-R1-Distill-Qwen-7B模型。
+
+#### 3.2 创建Embedding模型服务连接
+
+同3.1操作，创建创建通用Embedding模型服务连接。
+
+![image-20251116171217955](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116171217955.png)
+
+#### 3.3 创建SerpApi连接
+
+在**服务连接配置** > **自定义连接**页签下单击**新建连接**，创建SerpApi连接。配置前提条件中获取的api_key。
+
+![image-20251116171236956](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116171236956.png)
+
+### 4、创建知识库索引
+
+新建知识库索引，将语料经过解析、分块、向量化后存储到向量数据库，从而构建知识库。配置数据源OSS路径、输出OSS路径、Embedding类型、Embedding连接以及向量数据库类型。
+
+![image-20251116171250322](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116171250322.png)
+
+### 5、创建并运行应用流
+
+进入LangStudio，选择工作空间后，在**应用流**页签下单击**新建应用流**，创建基于Web搜索和RAG的聊天助手应用流，并配置知识库索引、serp搜索以及大模型参数。
+
+![image-20251116170828092](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116170828092.png)
+
+调试/运行：单击右上角**运行**，开始执行应用流。
+
+![image-20251116170932716](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116170932716.png)
+
+也可以查看链路：单击生成答案下的**查看链路**，查看Trace详情或拓扑视图。
+
+![image-20251116171058807](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20251116171058807.png)
+
+### 6、部署应用流
+
+在应用流开发页面，单击右上角**部署**，将应用流部署为EAS服务。部署参数其余配置保持默认或根据实际需求进行配置，关键参数配置如下：
+
+- 资源部署 > 实例数：配置服务实例数。本文部署仅供测试使用，因此实例数配置为1。**在生产阶段，建议配置多个服务实例，以降低单点故障的风险。**
+- 专有网络 > VPC：由于SerpApi服务需要访问公网，因此需要配置具备公网访问能力的VPC（EAS服务默认不可访问公网）。另外，如果创建知识库索引中向量数据库类型为Milvus，还需确保与Milvus实例相同的专有网络，或已选的专有网络和Milvus实例所在的专有网络已经互通。
+
+## 三、参考文档
+
+https://help.aliyun.com/zh/pai/use-cases/chatbot-with-rag-and-web-search
