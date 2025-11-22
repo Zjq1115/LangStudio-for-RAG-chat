@@ -69,7 +69,8 @@
 
 ## 三、参考文档
 
-https://help.aliyun.com/zh/pai/use-cases/chatbot-with-rag-and-web-search
+[https://help.aliyun.com/zh/pai/use-cases/chatbot-with-rag-and-web-search](https://pai.console.aliyun.com/?regionId=cn-shanghai&spm=5176.12818093_47.resourceCenter.7.47032cc9eSnr3q&workspaceId=949365#/dsw-gallery-workspace?category=&pageNum=1)
+
 
 
 
